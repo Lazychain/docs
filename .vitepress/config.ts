@@ -67,7 +67,7 @@ export default withMermaid({
     [
       "script",
       {
-        src: "https://platform.twitter.com/widgets.js"
+        src: "https://platform.twitter.com/widgets.js",
       },
     ],
   ],
@@ -157,7 +157,53 @@ function sidebarHome() {
           text: "Resources",
           collapsed: true,
           items: [
-            { text: "Technical specifications", link: "/learn/specifications" },
+            { text: "Architecture", link: "/learn/architecture" },
+            {
+              text: "ADR",
+              collapsed: true,
+              items: [
+                { text: "0003- TIA token", link: "/learn/adr/0003-base-token" },
+                {
+                  text: "0004- NFT transfer",
+                  link: "/learn/adr/0004-nft-transfer",
+                },
+                { text: "0007- Explorer", link: "/learn/adr/0007-explorer" },
+                { text: "0010- LNS service", link: "/learn/adr/0010-lns" },
+                { text: "0010- Bridges", link: "/learn/adr/0011-union" },
+              ],
+            },
+            {
+              text: "User Stories",
+              collapsed: true,
+              items: [
+                {
+                  text: "0002- NFT transfer",
+                  link: "/learn/stories/0002-nft-transfer",
+                },
+                {
+                  text: "0003- NFT Staking",
+                  link: "/learn/stories/0003-nft-staking",
+                },
+                {
+                  text: "0004- NFT Unstaking",
+                  link: "/learn/stories/0004-nft-unstaking",
+                },
+              ],
+            },
+            {
+              text: "Design",
+              collapsed: true,
+              items: [
+                {
+                  text: "Design",
+                  link: "/learn/design/design",
+                },
+                {
+                  text: "Prototyping",
+                  link: "/learn/design/prototyping",
+                },
+              ],
+            },
           ],
         },
       ],
