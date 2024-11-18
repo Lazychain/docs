@@ -15,3 +15,5 @@ flowchart LR
 ::: warning
 Add gherkin scenarios
 :::
+
+Notice: On the smart contract we should check sanity of the nft IPFS hash id to ensure that it belongs to a real Celestine slot society nft.
