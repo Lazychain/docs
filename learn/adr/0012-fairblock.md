@@ -74,7 +74,7 @@ The `lottery` contract is the responsible for:
 
 Functions:
 
-- EXECUTE:OWNER:constructor(address decrypter, number fees, number threshold)
+- EXECUTE:OWNER:constructor(address decrypter, number fees)
 - EXECUTE:OWNER:finalizeCampaign()
   - set true to campaignFinalized
 - EXECUTE:OWNER:startCampaign()
@@ -82,7 +82,7 @@ Functions:
 - EXECUTE:ANYONE:draw() -> Result(draw:boolean, error)
   - check campaignFinalized == false.
   - Call random generator (Fairblock or commit-reveal-scheme) to get a number from 0 to 100
-  - check if generated random > threshold
+  - check if generated random == user number
     - true:
       - Increase total_draws
       - Change an NFT ownership to user addr.
@@ -100,14 +100,12 @@ Functions:
      * @notice Initializes the lottery with a decryption contract, a start_time and a fee.
      * @param _decrypter Address of the decryption contract
      * @param _fee The fee required to submit a draw
-     * @param _threshold Number to decide  if draw success or fail. Must be less than 100.
      */
-    constructor(address _decrypter, uint256 _fee, uint128 _threshold) {
+    constructor(address _decrypter, uint256 _fee) {
         owner = msg.sender;
         decrypterContract = IDecrypter(_decrypter);
         fee = _fee;
         campaignFinalized = true;
-        threshold = _threshold;
         emit LotteryInitialized(_decrypter,_fee);
     }
 ```
