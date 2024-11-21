@@ -87,7 +87,7 @@ Functions:
         - get player_name from addr map
         - update player_name: count if new record.
       - Send response
-        - { result: true, total_draws }
+        - { result: true, "ipfs_hash/id", total_draws }
         - Emit Winner Event
     - false:
       - Increase `total_draws`
