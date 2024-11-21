@@ -52,45 +52,45 @@ flowchart LR
 
 ## Integration
 
-### Collector Smart Contract
-
-Simple smart contract that receive the fees from the `lottery` smart contract and can be claimed only by the `owner` of the contract.
-
-Functions:
-
-- EXECUTE:OWNER: instantiate
-- EXECUTE:OWNER: claim() -> Result( (), error )
-  - Verifies owner
-  - send funds to the owner
-- QUERY: funds() -> Result (amount:number)
-  - check balance.
-
 ### Lottery Smart Contract
 
 The `lottery` contract is the responsible for:
 
 - Ownership the nfts until users winds, in that case it should transfer any `random nft` ownership to the winner.
 - Keep track of `total_draws` and `lucky_10_ranking` (how successful is the market campaign and top 10 luckiest users for dashboard).
+- Probability of win: 5%
 
 Functions:
 
-- EXECUTE:OWNER:constructor(address decrypter, number fees)
+- EXECUTE:OWNER:constructor(address decrypter, number fees, number threshold)
+  - Store the owner and set other fields
 - EXECUTE:OWNER:finalizeCampaign()
   - set true to campaignFinalized
 - EXECUTE:OWNER:startCampaign()
   - set false to campaignFinalized
-- EXECUTE:ANYONE:draw() -> Result(draw:boolean, error)
+- EXECUTE:OWNER: claim() -> Result( (), error )
+  - Verifies owner
+  - send funds to the owner
+- EXECUTE:ANYONE:draw(user_secret_hash: string) -> Result(draw:boolean, error)
   - check campaignFinalized == false.
-  - Call random generator (Fairblock or commit-reveal-scheme) to get a number from 0 to 100
-  - check if generated random == user number
+    - throw error `CampaignOver`
+  - check `fee` (funds sent)
+    - throw error `InsuficientFundsSent`
+  - Call random generator (Fairblock or commit-reveal-scheme) to get a number from 0 to 20 with `user_secret_hash`.
+    - Consider here `re-entry attack`
+  - check if generated random number == `user_secret_hash` number
     - true:
-      - Increase total_draws
-      - Change an NFT ownership to user addr.
-      - Update lucky_10_ranking[].
-      - Emit Winner Event
+      - Increase `total_draws`
+      - Transfer an NFT ownership to `info.address`.
+      - Update `lucky_10_ranking[]`.
+      - Send response
+        - { result: true, total_draws }
+        - Emit Winner Event
     - false:
-      - Increase total_draws
-      - Emit Lose Event
+      - Increase `total_draws`
+      - Send Response:
+        - { result: false, total_draws }
+        - Emit Lose Event
 - QUERY:ANYONE:dashboard() -> Result({addr: count}[])
   - return lucky_10_ranking[]
 - QUERY:ANYONE:total_draws() -> Result(count: number)
@@ -100,12 +100,14 @@ Functions:
      * @notice Initializes the lottery with a decryption contract, a start_time and a fee.
      * @param _decrypter Address of the decryption contract
      * @param _fee The fee required to submit a draw
+     * @param _threshold Number to decide  if draw success or fail. Must be less than 100.
      */
-    constructor(address _decrypter, uint256 _fee) {
+    constructor(address _decrypter, uint256 _fee, uint128 _threshold) {
         owner = msg.sender;
         decrypterContract = IDecrypter(_decrypter);
         fee = _fee;
         campaignFinalized = true;
+        threshold = _threshold;
         emit LotteryInitialized(_decrypter,_fee);
     }
 ```
