@@ -77,7 +77,8 @@ Functions:
   - check `fee` (funds sent)
     - throw error `InsuficientFundsSent`
   - Call random generator (Fairblock or commit-reveal-scheme) to get a number from 0 to 20 with `user_secret_hash`.
-    - Consider here `re-entry attack`
+    - Consider here `re-entry attack`.
+    - code: `uint(FairyringContract.latestRandomness()) % 20`
   - check if generated random number == `user_secret_hash` number
     - true:
       - Increase `total_draws`
