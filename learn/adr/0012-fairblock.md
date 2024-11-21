@@ -62,7 +62,7 @@ The `lottery` contract is the responsible for:
 
 Functions:
 
-- EXECUTE:OWNER:constructor(address decrypter, number fees, number threshold)
+- EXECUTE:OWNER:constructor(address decrypter, number fees)
   - Store the owner and set other fields
 - EXECUTE:OWNER:finalizeCampaign()
   - set true to campaignFinalized
@@ -82,7 +82,9 @@ Functions:
     - true:
       - Increase `total_draws`
       - Transfer an NFT ownership to `info.address`.
-      - Update `lucky_10_ranking[]`.
+      - Update `lucky_10_ranking{}`.
+        - get player_name from addr map
+        - update player_name: count if new record.
       - Send response
         - { result: true, total_draws }
         - Emit Winner Event
@@ -91,9 +93,12 @@ Functions:
       - Send Response:
         - { result: false, total_draws }
         - Emit Lose Event
-- QUERY:ANYONE:dashboard() -> Result({addr: count}[])
-  - return lucky_10_ranking[]
+- EXECUTE:ANYONE:setPlayerName(name: string) -> Result((), error)
+  - use info.address and set name in a Map{address: name}
+- QUERY:ANYONE:dashboard() -> Result({player_name: count}[])
+  - return lucky_10_ranking{}
 - QUERY:ANYONE:total_draws() -> Result(count: number)
+- QUERY:ANYONE:getPlayerName() -> Result(name: string)
 
 ```solidity
     /**
@@ -102,12 +107,11 @@ Functions:
      * @param _fee The fee required to submit a draw
      * @param _threshold Number to decide  if draw success or fail. Must be less than 100.
      */
-    constructor(address _decrypter, uint256 _fee, uint128 _threshold) {
+    constructor(address _decrypter, uint256 _fee) {
         owner = msg.sender;
         decrypterContract = IDecrypter(_decrypter);
         fee = _fee;
         campaignFinalized = true;
-        threshold = _threshold;
         emit LotteryInitialized(_decrypter,_fee);
     }
 ```
