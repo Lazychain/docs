@@ -116,3 +116,85 @@ Functions:
         emit LotteryInitialized(_decrypter,_fee);
     }
 ```
+
+### Tasks
+
+### Environment
+
+#### Forma
+
+- network: sketchpad-1
+- rpc:(<https://rpc.sketchpad-1.forma.art>)
+- TIA: (0x2F9C0BCD2C37eE6211763E7688F7D6758FDdCF53)
+- fairyRing Contract: (0x....?)
+  - [FairyringContract](https://github.com/Fairblock/FairyringContract)
+- fairyport
+  - [fairyport](https://github.com/Fairblock/fairyport)
+
+#### Fairyring
+
+- network: fairyring-testnet-3
+
+#### Lazy
+
+- [FairyPort Node](IP:....)
+- [Fair Node](IP:...)
+
+##### Fairyport and Fair Node
+
+`Docker compose` FairyPort and Fairy Nodes:
+
+- FairyPort.Dockerfile:
+  - Configure [.env](https://github.com/Fairblock/fairyport/blob/main/.env.example) and volume it.
+  - Create [config.yaml] and volume it.
+  - Make Dockerfile
+    - volume the configuration
+    - CMD=["fairyport","start","--config","$HOME/.fairyport/config.yml"
+- FairBlock.Dockerfile:
+  - [](https://github.com/Fairblock/fairyring.git)
+    - Use version v0.9.1
+    - docker_setup.sh ?
+      - Procedure the same as cosmos blockchain (genesis, tweak configuration, create dev and validator wallets)
+      - [initialize-the-fairyring-node](https://docs.fairblock.network/docs/running-a-node/run_testnet_node#initialize-the-fairyring-node)
+      - [validating_on_testnet](https://docs.fairblock.network/docs/running-a-node/validating_on_testnet)
+
+```bash
+git clone https://github.com/Fairblock/fairyport.git
+cd fairyport && make install
+```
+
+```bash
+git clone https://github.com/Fairblock/fairyring.git
+cd fairyring && git checkout v0.9.1 && make install
+```
+
+[fairyPort configuration]
+
+We are not relaying anything to a cosmos chain, so no change on `cosmosrelayconfig`
+
+```yaml
+cosmosrelayconfig:
+    derivepath: m/44'/118'/0'/0/0
+    destinationnode:
+        accountprefix: fairy
+        chainid: fairyring_devnet
+        grpcport: 9090
+        ip: 127.0.0.1
+        port: 26657
+        protocol: tcp
+    metricsport: 2224
+evmrelaytarget:
+    chainrpc: wss://ws.sketchpad-1.forma.art
+    contractaddress: update_to_fairyring_contract_address
+fairyringnodews:
+    ip: fairyring-testnet-3
+    port: 26657
+    protocol: tcp
+```
+
+[.env]
+
+```
+EVM_PKEY=...
+COSMOS_MNEMONIC="..."
+```
