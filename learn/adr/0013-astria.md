@@ -69,6 +69,15 @@ flowchart LR
     E -- Notify Update State --> G
     G -- Update State --> C 
 
+    classDef green fill:#696,stroke:#333;
+    classDef purple fill:#969,stroke:#333;
+    classDef orange fill:#f96
+    classDef bar stroke:#0f0
+    class E orange
+    class C green
+    class H purple
+    class G bar
+
 ```
 
 #### Data Availability Flow
@@ -224,9 +233,10 @@ flowchart TB
 
 - Create a Bridge UI for NFT
   - Integrate Front end Flame webapp using [astria-bridge-web-app](https://github.com/astriaorg/astria-bridge-web-app)
-- Run and create an Artela/Reth node for lazyChain.
+- Run and create `Artela/Reth` node for lazyChain.
   - Deploy lazy smart contracts ERC1155 and ERC721.
-- Run `Conductor` for `Artela`?
+  - Create contract adapters to apply `Royalty` to `ERC721` and `CW721` and reversal.
+- Run `Conductor` for `Artela/Geth`?
 
 #### Monitoring
 
