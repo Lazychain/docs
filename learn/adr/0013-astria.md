@@ -72,8 +72,9 @@ flowchart LR
     classDef green fill:#696,stroke:#333;
     classDef purple fill:#969,stroke:#333;
     classDef orange fill:#f96
+    classDef blue fill:#303
     classDef bar stroke:#0f0
-    class E orange
+    class E blue
     class C green
     class H purple
     class G bar
@@ -136,10 +137,11 @@ flowchart TB
     classDef purple fill:#969,stroke:#333;
     classDef orange fill:#f96
     classDef bar stroke:#0f0
+    classDef blue fill:#303
     class RK_GF purple
     class RK_SEQ green
     class RK_SC_721 green
-    class E orange
+    class E blue
     class G bar
 ```
 
