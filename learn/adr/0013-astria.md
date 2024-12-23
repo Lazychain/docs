@@ -231,6 +231,8 @@ flowchart TB
     RK_SC_721_STAKE --> Celestia
 ```
 
+#### Tasks
+
 > **Tasks**
 
 - Create a Bridge UI for NFT
