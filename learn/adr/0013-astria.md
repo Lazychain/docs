@@ -198,14 +198,10 @@ flowchart TB
 ```mermaid
 flowchart TB
     User["User"]
-    Admin["Admin"]
 
-    subgraph Frontend["lazy.fun"]
-        subgraph RKC["Rollkit Client"]
-            RKC_A["Client"] 
-            RKC_B["go-da"] 
-
-            RKC_A-- "Message" -->RKC_B
+    subgraph Frontend["lazy.fun Web Page"]
+        subgraph RKC["Rollup Client"]
+            RKC_A["Sdk Client"] 
         end
         Proxy["Web Proxy/Balancer"]
         UI["Web Interface"]
@@ -214,7 +210,7 @@ flowchart TB
         
     end
 
-    subgraph RK["LazyChain"]
+    subgraph RK["LazyChain RollUp"]
         subgraph RK_SC["Smart Contracts"]
             RK_SC_721["ERC721"]
             RK_SC_721_STAKE["Stake/unstake"]
@@ -224,11 +220,20 @@ flowchart TB
     subgraph Celestia["Celestia Data Availability"]
     end
 
+    subgraph Astria["Astria Stack"]
+        Composer --> Concensus
+        Concensus --> Condutor
+
+
+    end
+
     User -- Stake [Period] / Unstake --> Proxy
-    UI --1 Submit Tx--> RKC
+    UI --1 Submit Tx --> RKC
     RKC -- 2 Submit --> RK_SC_721
     RK_SC_721 -- Send [Lock Period] --> RK_SC_721_STAKE
-    RK_SC_721_STAKE --> Celestia
+    RK_SC_721_STAKE --> Composer 
+    Celestia <--> Astria
+    Condutor --> RK
 ```
 
 #### Tasks
@@ -279,13 +284,13 @@ flowchart LR
 
 #### Faucet
 
-- [faucet-frontend](https://github.com/artela-network/faucet-frontend)
+- [faucet](https://github.com/Lazychain/eth-faucet)
 
 
 #### Explorer
 
-- [block-explorer](https://github.com/artela-network/block-explorer)
-- [block-explorer-frontend](https://github.com/artela-network/block-explorer-frontend)
+- [blockscout](https://github.com/blockscout/blockscout)
+- [blockscout-frontend](https://github.com/Lazychain/blockscout-frontend)
 
 
 #### Dashboard
